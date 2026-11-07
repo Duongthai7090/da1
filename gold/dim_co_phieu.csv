@@ -1,0 +1,31 @@
+﻿co_phieu_key,ma_cp,ten_cong_ty,ten_tieng_anh,san_giao_dich,loai_ma,mau_bctc,ngay_du_lieu_dau,ngay_du_lieu_cuoi,ghi_chu_pham_vi,nganh_cap1_ma,nganh_cap1,nganh_cap2_ma,nganh_cap2,nganh_cap3_ma,nganh_cap3,nganh_cap4_ma,nganh_cap4,nguon_phan_nganh,thuoc_vn30_hien_hanh
+2,ACB,Ngân hàng TMCP Á Châu,Asia Commercial Joint Stock Bank,HOSE,CO_PHIEU,NH,2012-03-20,2026-10-14,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+4,BID,Ngân hàng TMCP Đầu tư và Phát triển Việt Nam,Joint Stock Commercial Bank for Investment and Development of Vietnam,HOSE,CO_PHIEU,NH,2014-01-24,2026-10-14,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+122,BSR,CTCP - Tổng Công ty Lọc hóa dầu Việt Nam,Petrovietnam Refining And Petrochemical Corporation,HOSE,CO_PHIEU,DN,2018-03-01,2026-10-16,,0001,Dầu khí,0500,Dầu khí,0530,Sản xuất Dầu khí,0533,Sản xuất và Khai thác dầu khí,VCI_ICB,1
+6,CTG,Ngân hàng TMCP Công Thương Việt Nam,Vietnam Joint Stock Commercial Bank For Industry And Trade,HOSE,CO_PHIEU,NH,2009-07-16,2026-10-14,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+1,FPT,CTCP FPT,FPT Corporation,HOSE,CO_PHIEU,DN,2006-12-13,2026-10-14,,9000,Công nghệ Thông tin,9500,Công nghệ Thông tin,9530,Phần mềm & Dịch vụ Máy tính,9537,Phần mềm,VCI_ICB,1
+8,GAS,Tổng Công ty Khí Việt Nam - CTCP,PetroVietnam Gas Joint Stock Corporation,HOSE,CO_PHIEU,DN,2012-05-21,2026-10-14,,7000,Tiện ích Cộng đồng,7500,"Điện, nước & xăng dầu khí đốt",7570,Nước & Khí đốt,7573,Phân phối xăng dầu & khí đốt,VCI_ICB,1
+9,GVR,Tập đoàn Công nghiệp Cao su Việt Nam - CTCP,Viet Nam Rubber Group - Joint Stock Company,HOSE,CO_PHIEU,DN,2018-03-21,2026-10-14,,1000,Nguyên vật liệu,1300,Hóa chất,1350,Hóa chất,1353,"Nhựa, cao su & sợi",VCI_ICB,1
+10,HDB,Ngân hàng TMCP Phát triển Thành phố Hồ Chí Minh,Ho Chi Minh City Development Joint Stock Commercial Bank,HOSE,CO_PHIEU,NH,2018-01-05,2026-10-14,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+11,HPG,CTCP Tập đoàn Hòa Phát,Hoa Phat Group Joint Stock Company,HOSE,CO_PHIEU,DN,2007-11-15,2026-10-14,,1000,Nguyên vật liệu,1700,Tài nguyên Cơ bản,1750,Kim loại,1757,Thép và sản phẩm thép,VCI_ICB,1
+123,LPB,Ngân hàng TMCP Lộc Phát Việt Nam,Fortune Vietnam Joint Stock Commercial Bank,HOSE,CO_PHIEU,NH,2017-10-05,2026-10-16,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+12,MBB,Ngân hàng TMCP Quân đội,Military Commercial Joint Stock Bank,HOSE,CO_PHIEU,NH,2011-11-01,2026-10-14,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+124,MCH,CTCP Hàng tiêu dùng Masan,Masan Consumer Corporation,HOSE,CO_PHIEU,DN,2017-01-05,2026-10-16,,3000,Hàng Tiêu dùng,3500,Thực phẩm và đồ uống,3570,Sản xuất thực phẩm,3577,Thực phẩm,VCI_ICB,1
+13,MSN,CTCP Tập đoàn Masan,Masan Group Corporation,HOSE,CO_PHIEU,DN,2009-11-05,2026-10-14,,3000,Hàng Tiêu dùng,3500,Thực phẩm và đồ uống,3570,Sản xuất thực phẩm,3577,Thực phẩm,VCI_ICB,1
+14,MWG,CTCP Đầu tư Thế giới Di động,Mobile World Investment Corporation,HOSE,CO_PHIEU,DN,2014-07-14,2026-10-14,,5000,Dịch vụ Tiêu dùng,5300,Bán lẻ,5370,Bán lẻ,5379,Phân phối hàng chuyên dụng,VCI_ICB,1
+17,SAB,Tổng Công ty cổ phần Bia - Rượu - Nước giải khát Sài Gòn,Saigon Beer - Alcohol - Beverage Corporation,HOSE,CO_PHIEU,DN,2016-12-06,2026-10-14,,3000,Hàng Tiêu dùng,3500,Thực phẩm và đồ uống,3530,Bia và đồ uống,3533,Sản xuất bia,VCI_ICB,1
+18,SHB,Ngân hàng TMCP Sài Gòn - Hà Nội,Saigon Hanoi Commercial Joint Stock Bank,HOSE,CO_PHIEU,NH,2012-03-20,2026-10-14,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+19,SSB,Ngân hàng TMCP Đông Nam Á,Southeast Asia Commercial Joint Stock Bank,HOSE,CO_PHIEU,NH,2021-03-24,2026-10-14,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+20,SSI,CTCP Chứng khoán SSI,SSI Securities Corporation,HOSE,CO_PHIEU,CK,2006-12-15,2026-10-14,,8000,Tài chính,8700,Dịch vụ tài chính,8770,Dịch vụ tài chính,8777,Môi giới chứng khoán,VCI_ICB,1
+21,STB,Ngân hàng TMCP Sài Gòn Tài Lộc,Saigon Treasure Commercial Joint Stock Bank,HOSE,CO_PHIEU,NH,2006-10-13,2026-10-14,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+22,TCB,Ngân hàng TMCP Kỹ thương Việt Nam,Vietnam Technological and Commercial Joint Stock Bank,HOSE,CO_PHIEU,NH,2018-06-04,2026-10-14,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+125,TCX,CTCP Chứng khoán Kỹ Thương,Techcom Securities Joint Stock Company,HOSE,CO_PHIEU,CK,2025-10-21,2026-10-16,,8000,Tài chính,8700,Dịch vụ tài chính,8770,Dịch vụ tài chính,8777,Môi giới chứng khoán,VCI_ICB,1
+24,VCB,Ngân hàng TMCP Ngoại thương Việt Nam,Joint Stock Commercial Bank for Foreign Trade of Vietnam,HOSE,CO_PHIEU,NH,2009-06-30,2026-10-16,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+25,VHM,CTCP Vinhomes,Vinhomes Joint Stock Company,HOSE,CO_PHIEU,DN,2018-05-17,2026-10-14,,8000,Tài chính,8600,Bất động sản,8630,Bất động sản,8633,Bất động sản,VCI_ICB,1
+26,VIB,Ngân hàng TMCP Quốc tế Việt Nam,Vietnam International Commercial Joint Stock Bank,HOSE,CO_PHIEU,NH,2017-01-09,2026-10-14,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+27,VIC,Tập đoàn VINGROUP - CTCP,Vingroup Joint Stock Company,HOSE,CO_PHIEU,DN,2007-09-19,2026-10-14,,8000,Tài chính,8600,Bất động sản,8630,Bất động sản,8633,Bất động sản,VCI_ICB,1
+28,VJC,CTCP Hàng không Vietjet,Vietjet Aviation Joint Stock Company,HOSE,CO_PHIEU,DN,2017-02-28,2026-10-14,,5000,Dịch vụ Tiêu dùng,5700,Du lịch và Giải trí,5750,Du lịch & Giải trí,5751,Hàng không,VCI_ICB,1
+29,VNM,CTCP Sữa Việt Nam,Vietnam Dairy Products Joint Stock Company,HOSE,CO_PHIEU,DN,2006-01-19,2026-10-14,,3000,Hàng Tiêu dùng,3500,Thực phẩm và đồ uống,3570,Sản xuất thực phẩm,3577,Thực phẩm,VCI_ICB,1
+30,VPB,Ngân hàng TMCP Việt Nam Thịnh Vượng,Vietnam Prosperity Joint Stock Commercial Bank,HOSE,CO_PHIEU,NH,2017-08-17,2026-10-14,,8301,Ngân hàng,8300,Ngân hàng,8350,Ngân hàng,8355,Ngân hàng,VCI_ICB,1
+126,VPL,CTCP Vinpearl,Vinpearl Joint Stock Company,HOSE,CO_PHIEU,DN,2025-05-13,2026-10-16,,5000,Dịch vụ Tiêu dùng,5700,Du lịch và Giải trí,5750,Du lịch & Giải trí,5755,Dịch vụ giải trí,VCI_ICB,1
+31,VRE,CTCP Vincom Retail,Vincom Retail Joint Stock Company,HOSE,CO_PHIEU,DN,2017-11-06,2026-10-14,,8000,Tài chính,8600,Bất động sản,8630,Bất động sản,8633,Bất động sản,VCI_ICB,1
