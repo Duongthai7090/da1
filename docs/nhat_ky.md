@@ -1,5 +1,31 @@
 # Nhật ký triển khai dự án Dashboard VN30
 
+## 2026-11-08: Hoàn thành Phạm vi mới theo Mục 10 của AGENTS.md
+- **Nạp dữ liệu vào MySQL schema `vn30_gold` (`src/nap_mysql.py`)**:
+  - Viết `src/nap_mysql.py` đọc toàn bộ `gold/*.parquet`, khởi tạo tự động 11 bảng dữ liệu với khóa chính, khóa duy nhất, chỉ mục tối ưu, bảng mã `utf8mb4`.
+  - Cơ chế nạp chạy lặp lại an toàn (DELETE/TRUNCATE + bulk insert trong transaction).
+  - Kết quả nạp 11 bảng: `dim_co_phieu` (30 dòng), `dim_ngay` (2.933 dòng), `fact_gia_ngay` (56.163 dòng), `fact_loi_suat` (56.163 dòng), `fact_chi_bao_ky_thuat` (56.163 dòng), `fact_chi_so_tai_chinh` (112 dòng), `fact_chi_so_thi_truong` (4.014 dòng), `fact_su_kien` (392 dòng), `fact_tin_tuc` (160 dòng), `fact_vi_mo` (21 dòng), `meta_tai_lieu` (4 dòng). Tổng cộng **176.155 dòng**, khớp chính xác 100% với tầng Gold.
+  - Tích hợp tự động gọi `nap_mysql.py` vào cuối quy trình cập nhật hàng ngày `src/cap_nhat.py`.
+- **Cào sự kiện cổ tức/phát hành 30 mã VN30 & Đối soát lỗi TCB (`scripts/etl/cao_lai_su_kien.py`)**:
+  - Cào thành công 30/30 mã VN30 từ VCI với cơ chế checkpoint và bắt `BaseException` tự động nghỉ giải phóng quota Guest limit.
+  - Tạo bảng `stg_su_kien` và chuẩn hóa thành `fact_su_kien` (392 sự kiện).
+  - **Xác nhận thành công**: TCB có sự kiện **Phát hành cổ phiếu trả cổ tức tỷ lệ 50.0%** (GDKHQ ngày **29/10/2026**, ngày chốt danh sách **30/10/2026**). Nguồn KBS điều chỉnh hồi tố giá tham chiếu (giảm 1/1.5) từ phiên 15/10/2026, làm rõ bản chất mức giảm danh nghĩa -33.4% khi ghép nối nguồn. Xuất đầy đủ ra `gold/fact_su_kien.csv` và `.parquet`.
+- **Pipeline Tin tức RSS theo mô hình `stg -> master -> map` (`scripts/etl/pipeline_tin_tuc.py`)**:
+  - Thu thập 160 bài báo tài chính từ 4 nguồn RSS công khai (VnExpress, Tuổi Trẻ, Thanh Niên, VietnamNet) vào `stg_tin_tuc`.
+  - Chuẩn hóa sang `fact_tin_tuc`: Ánh xạ tự động mã cổ phiếu (`ma_cp`), ngành cấp 1 (`nganh_cap1` qua `dim_co_phieu`), và phân loại tin (`loai_tin`: Sự kiện CK, Ngành, Chung) bằng hệ thống từ khóa; giữ `NULL` cho các trường chưa xác định. Xuất ra Gold và nạp vào MySQL `vn30_gold`.
+- **Dựng khung dữ liệu phi cấu trúc & `meta_tai_lieu` (`scripts/etl/dung_khung_phi_cau_truc.py`)**:
+  - Thiết lập cây thư mục phân cấp `data/tai_lieu/<ma_cp>/<loai>/<nam>/`.
+  - Tải và lưu trữ 4 tệp PDF tài liệu BCTC mẫu cho các doanh nghiệp đầu ngành (FPT, VCB, HPG, TCB).
+  - Tạo bảng `meta_tai_lieu` trong MySQL `vn30_gold` và xuất file `gold/meta_tai_lieu.parquet` với trường `meta_dac_thu = NULL`.
+- **Nâng cấp Webapp Streamlit (`webapp/pages/05_tin_tuc_vi_mo.py` & `webapp/utils/data_loader.py`)**:
+  - Bổ sung tab **"📅 Sự kiện GDKHQ & Quyền"** với bộ lọc mã cổ phiếu, hình thức chi trả, tìm kiếm loại sự kiện và highlight trực quan sự kiện cổ tức 50% của TCB.
+  - Bổ sung bộ lọc phân loại tin tức và hiển thị nhãn Ngành / Loại tin trên từng bài viết.
+  - Cập nhật tài liệu `docs/han_che_du_lieu.md` và `docs/kiem_tra_dieu_chinh_gia.md`: Làm rõ không có giá theo giờ/intraday, không có đồ thị cổ đông, không dùng mô hình AI dự báo; tin ngành phân loại theo từ khóa và tệp PDF chỉ là tài liệu mẫu.
+- **Kiểm thử tự động**:
+  - `tests/kiem_tra_gold.py`: 9/9 bài kiểm tra ĐẠT (PASS) 100%.
+  - `tests/test_app.py`: 7/7 trang Streamlit PASSED không có exception nào.
+
+
 ## 2026-11-01: Hoàn thành Bước A1 (Xây dựng tầng dữ liệu Gold)
 - **Tạo bộ dữ liệu Gold**: Đã trích xuất và lưu trữ 6 bảng Star Schema trong thư mục `gold/` ở cả 2 định dạng CSV và Parquet (`dim_co_phieu`, `dim_ngay`, `fact_gia_ngay`, `fact_loi_suat`, `fact_chi_bao_ky_thuat`, `fact_chi_so_tai_chinh`).
 - **Phạm vi chuẩn hóa**: Thu gọn đúng 30 mã VN30 hiện hành (`thuoc_vn30_hien_hanh = 1`) trong cửa sổ chung từ 2018-10-16 đến 2026-10-14 (55.803 dòng giá/lợi suất/chỉ báo; 112 dòng BCTC 2022-2025).

@@ -17,9 +17,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils.data_loader import get_all_data, CANH_BAO_GIA
+from utils.style import setup, ghi_chu, TANG, GIAM, VN30, VNINDEX
 
-st.set_page_config(page_title="Phân tích cổ phiếu | VN30", page_icon="📈", layout="wide")
-st.title("📈 Phân tích Cổ phiếu")
+setup('Phân tích cổ phiếu', 'Phân tích cổ phiếu')
 
 data = get_all_data()
 fact_gia = data["fact_gia"]
@@ -27,10 +27,10 @@ fact_cb = data["fact_cb"]
 dim_cp = data["dim_cp"]
 ngay_cap_nhat = data["ngay_cap_nhat"]
 
-st.caption(f"📅 Cập nhật đến ngày: **{ngay_cap_nhat}**")
+st.markdown(f'<div class="sub">Dữ liệu đến ngày {ngay_cap_nhat}</div>', unsafe_allow_html=True)
 
 # --- Sidebar bộ lọc ---
-st.sidebar.header("🔧 Bộ lọc")
+st.sidebar.markdown("**Bộ lọc**")
 danh_sach_ma = sorted(dim_cp["ma_cp"].tolist())
 ma_chon = st.sidebar.selectbox("Chọn mã cổ phiếu", danh_sach_ma, index=danh_sach_ma.index("FPT") if "FPT" in danh_sach_ma else 0)
 
@@ -75,17 +75,27 @@ ls_ky = (gia_hien_tai / gia_dau_ky - 1) * 100
 kl_tb = df_g["khoi_luong"].mean()
 
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("💰 Giá đóng cửa (nghìn đ)", f"{gia_hien_tai:.2f}")
-c2.metric("📊 Lợi suất tích lũy kỳ", f"{ls_ky:+.2f}%")
-c3.metric("📦 KL TB/ngày (cp)", f"{kl_tb:,.0f}")
+c1.metric("Giá đóng cửa (nghìn đ)", f"{gia_hien_tai:.2f}")
+c2.metric("Lợi suất tích lũy kỳ", f"{ls_ky:+.2f}%")
+c3.metric("KL TB/ngày (cp)", f"{kl_tb:,.0f}")
 rsi_gan = df_cb["rsi14"].dropna().iloc[-1] if len(df_cb) > 0 and "rsi14" in df_cb.columns else float("nan")
 rsi_text = f"{rsi_gan:.1f}" if not pd.isna(rsi_gan) else "N/A"
 rsi_note = "Quá mua" if not pd.isna(rsi_gan) and rsi_gan > 70 else ("Quá bán" if not pd.isna(rsi_gan) and rsi_gan < 30 else "Trung tính")
-c4.metric("📉 RSI14 (gần nhất)", rsi_text, delta=rsi_note)
+c4.metric("RSI14 (gần nhất)", rsi_text, delta=rsi_note)
+
+# --- KPI hàng 2: vị thế giá ---
+g252 = df_g.tail(252)
+c1, c2, c3, c4 = st.columns(4)
+c1.metric("Đỉnh 52 tuần", f"{g252['gia_cao'].max():.2f}")
+c2.metric("Đáy 52 tuần", f"{g252['gia_thap'].min():.2f}")
+c3.metric("Cách đỉnh kỳ", f"{(gia_hien_tai / df_g['gia_dong'].max() - 1) * 100:.1f}%")
+vol = df_g["gia_dong"].pct_change().std() * (252 ** 0.5) * 100
+c4.metric("Biến động năm hóa", f"{vol:.1f}%")
 
 st.divider()
 
 # --- Biểu đồ tổng hợp: Nến + MA + KL + RSI + MACD ---
+st.subheader(f"{ma_chon} — {ten_ct}")
 fig = make_subplots(
     rows=4, cols=1,
     shared_xaxes=True,
@@ -99,7 +109,7 @@ fig.add_trace(go.Candlestick(
     x=df_g["ngay"],
     open=df_g["gia_mo"], high=df_g["gia_cao"],
     low=df_g["gia_thap"], close=df_g["gia_dong"],
-    name="Giá", increasing_line_color="#4CAF50", decreasing_line_color="#F44336"
+    name="Giá", increasing_line_color=TANG, decreasing_line_color=GIAM
 ), row=1, col=1)
 
 # MA20, MA50, MA200
@@ -112,7 +122,7 @@ for col_ma, mau, do_day in [("ma20", "#FF9800", 1.5), ("ma50", "#2196F3", 1.5), 
         ), row=1, col=1)
 
 # Panel 2: Khối lượng
-mau_kl = ["#4CAF50" if r > 0 else "#F44336"
+mau_kl = [TANG if r > 0 else GIAM
            for r in (df_g["gia_dong"] - df_g["gia_mo"])]
 fig.add_trace(go.Bar(
     x=df_g["ngay"], y=df_g["khoi_luong"],
@@ -140,18 +150,18 @@ if "macd" in df_cb.columns and "macd_tin_hieu" in df_cb.columns:
         name="Signal", line=dict(color="#FF5722", width=1.5, dash="dash")
     ), row=4, col=1)
     if "macd_phan_ky" in df_cb.columns:
-        mau_hist = ["#4CAF50" if v >= 0 else "#F44336" for v in df_cb["macd_phan_ky"].fillna(0)]
+        mau_hist = [TANG if v >= 0 else GIAM for v in df_cb["macd_phan_ky"].fillna(0)]
         fig.add_trace(go.Bar(
             x=df_cb["ngay"], y=df_cb["macd_phan_ky"],
             name="Histogram", marker_color=mau_hist, showlegend=False, opacity=0.6
         ), row=4, col=1)
 
 fig.update_layout(
-    title=f"{ma_chon} — {ten_ct}",
     height=800,
     hovermode="x unified",
     xaxis_rangeslider_visible=False,
-    legend=dict(orientation="h", y=1.02),
+    legend=dict(orientation="h", y=1.04),
+    margin=dict(t=70, b=40),
 )
 fig.update_yaxes(title_text="Giá (nghìn đ)", row=1, col=1)
 fig.update_yaxes(title_text="Khối lượng", row=2, col=1)
@@ -160,8 +170,31 @@ fig.update_yaxes(title_text="MACD", row=4, col=1)
 
 st.plotly_chart(fig, use_container_width=True)
 
+# --- Phân tích bổ sung: lợi suất theo tháng + phân phối lợi suất ngày ---
+import numpy as np
+import plotly.express as px
+ca, cb = st.columns([3, 2])
+with ca:
+    th = df_g.set_index("ngay")["gia_dong"].resample("ME").last().pct_change().dropna() * 100
+    if len(th) > 1:
+        pv = th.to_frame("v").assign(nam=th.index.year, thang=th.index.month).pivot(index="nam", columns="thang", values="v")
+        fig_m = px.imshow(pv, text_auto=".1f", aspect="auto", color_continuous_scale=[GIAM, "#FFFFFF", TANG],
+                          color_continuous_midpoint=0, labels=dict(x="Tháng", y="Năm", color="%"),
+                          title="Lợi suất theo tháng (%)")
+        fig_m.update_layout(height=320)
+        st.plotly_chart(fig_m, use_container_width=True)
+with cb:
+    r = df_g["gia_dong"].pct_change().dropna() * 100
+    if len(r) > 5:
+        fig_h = px.histogram(r, nbins=40, title="Phân phối lợi suất ngày (%)")
+        fig_h.update_traces(marker_color=VN30)
+        fig_h.update_layout(height=320, showlegend=False, xaxis_title="", yaxis_title="Số phiên")
+        st.plotly_chart(fig_h, use_container_width=True)
+        ghi_chu(f"Trung bình {r.mean():+.2f}%/ngày · phiên tăng mạnh nhất {r.max():+.1f}% · giảm mạnh nhất {r.min():+.1f}% · "
+                f"tỷ lệ phiên tăng {(r > 0).mean() * 100:.0f}%.")
+
 # --- Bảng dữ liệu gần nhất (20 phiên) ---
-with st.expander("📋 Dữ liệu 20 phiên gần nhất"):
+with st.expander("Dữ liệu 20 phiên gần nhất"):
     hien_thi = df_g.tail(20)[["ngay", "gia_mo", "gia_cao", "gia_thap", "gia_dong", "khoi_luong"]].copy()
     hien_thi["ngay"] = hien_thi["ngay"].dt.strftime("%d/%m/%Y")
     hien_thi = hien_thi.rename(columns={

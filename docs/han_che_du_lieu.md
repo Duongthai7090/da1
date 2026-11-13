@@ -8,16 +8,18 @@
 ## 1. Giới hạn về Phạm vi và Độ phủ Dữ liệu (Coverage)
 - **Danh mục cổ phiếu**: Hệ thống chỉ theo dõi danh mục **30 mã cổ phiếu** thành phần thuộc chỉ số VN30 hiện hành tại kỳ rà soát gần nhất. Không mở rộng ra toàn bộ hơn 1.600 cổ phiếu trên 3 sàn HOSE, HNX, UPCoM.
 - **Khung thời gian giao dịch**: Dữ liệu giá giao dịch hàng ngày (OHLCV) được chuẩn hóa trong khung thời gian từ **16/10/2018** đến **30/10/2026** (khoảng 8 năm). Các mã mới niêm yết muộn hơn hoặc chuyển sàn (như BSR từ UPCoM) chỉ có dữ liệu từ ngày chính thức giao dịch được hệ thống ghi nhận.
-- **Tần suất dữ liệu**: Dữ liệu giá là dữ liệu cuối ngày (Daily EOD), không bao gồm dữ liệu Intraday hay Tick-by-tick.
+- **Tần suất dữ liệu**: Dữ liệu giá là dữ liệu cuối ngày (Daily EOD), **hoàn toàn không có dữ liệu theo giờ (Intraday/Hourly) hay Tick-by-tick**.
+- **Cơ cấu cổ đông & Mạng lưới quan hệ**: Hệ thống **không cung cấp đồ thị cổ đông (Shareholder ownership graph)** hay mạng lưới sở hữu chéo do nguồn dữ liệu miễn phí không có cấu trúc quan hệ thực thể đầy đủ.
+- **Mô hình Trí tuệ nhân tạo (AI / Machine Learning / LLM)**: Hệ thống là bộ giải pháp Business Analysis & BI chuẩn mực; **không tích hợp mô hình dự báo giá AI, sentiment analysis hay LLM chatbot**.
 
 ---
 
 ## 2. Kiểm tra Điều chỉnh Giá và Bất thường Giao dịch
-Theo kết quả đối chiếu giữa các phiên biến động lớn ($|Lợi\ suất| > 10\%$) và dữ liệu sự kiện doanh nghiệp (`docs/kiem_tra_dieu_chinh_gia.md`):
+Theo kết quả đối chiếu giữa các phiên biến động lớn ($|Lợi\ suất| > 10\%$) và dữ liệu sự kiện doanh nghiệp (`docs/kiem_tra_dieu_chinh_gia.md` & `gold/fact_su_kien.csv`):
 1. **Mã TCB (Phiên 15/10/2026)**:
-   - Xuất hiện mức giảm đột ngột **-33.4%** trong một phiên giao dịch.
-   - Đối chiếu nguồn dữ liệu thô về sự kiện quyền (cổ tức, chia tách) không tìm thấy sự kiện tương ứng trong ngày này.
-   - *Biện pháp xử lý*: Tuân thủ nguyên tắc không sửa đổi dữ liệu nguồn hoặc tự ý bịa số liệu, hệ thống giữ nguyên giá trị thực tế từ nguồn `vnstock` (KBS) và hiển thị cờ cảnh báo ⚠️ trên biểu đồ kỹ thuật để người dùng lưu ý.
+   - Xuất hiện mức giảm đột ngột **-33.4%** (từ 32.95 xuống 21.95 nghìn đồng).
+   - *Đối soát dữ liệu quyền*: Đã cào và xác nhận chính thức sự kiện: **TCB phát hành cổ phiếu trả cổ tức tỷ lệ 50.0%**, Ngày GDKHQ là **29/10/2026**, Ngày chốt danh sách là **30/10/2026** (nguồn VCI). Nguồn dữ liệu KBS đã điều chỉnh hồi tố giá tham chiếu (giảm 1/1.5 tương ứng -33.3%) từ các phiên cập nhật nửa cuối tháng 10/2026, dẫn đến bước nhảy nối nguồn giữa dữ liệu lịch sử gốc và dữ liệu mới cập nhật.
+   - *Biện pháp xử lý*: Tuân thủ quy tắc không tự ý sửa đổi dữ liệu gốc, hệ thống giữ nguyên chuỗi giá thực tế và hiển thị thông điệp cảnh báo rõ ràng trên Dashboard.
 2. **Mã SHB (Phiên 14/05/2021)**:
    - Lợi suất tăng trần **+10%** trùng ngày chốt danh sách chia cổ tức bằng cổ phiếu tỷ lệ 10%. Có nghi vấn nguồn dữ liệu chưa trừ triệt để giá tham chiếu điều chỉnh. Được ghi nhận cảnh báo trên hệ thống.
 3. **Mã BSR**:
@@ -50,13 +52,19 @@ Theo kết quả đối chiếu giữa các phiên biến động lớn ($|Lợi
    - Cổng XML của Vietcombank cung cấp tỷ giá bán ra hiện hành (Spot rate tại thời điểm truy vấn), không cung cấp chuỗi thời gian lịch sử chi tiết 8 năm. Vì vậy hệ thống chỉ hiển thị điểm tỷ giá hiện tại.
 3. **Kinh tế vĩ mô (GDP & CPI)**:
    - Số liệu được lấy từ World Bank Open Data API theo chu kỳ **năm** (Annual), phản ánh xu hướng trung - dài hạn, không có dữ liệu CPI/GDP theo từng tháng.
-4. **Nguồn cấp Tin tức (RSS)**:
-   - Kênh RSS chuyên mục Kinh doanh của Báo VnExpress hoạt động ổn định và được thu thập tự động.
-   - Các kênh RSS khác từ CafeF và Vietstock áp dụng tường lửa/User-Agent blocking đối với các parser XML tự động, nên hệ thống tập trung khai thác nguồn VnExpress kèm cơ chế tìm kiếm từ khóa và mã liên quan.
+5. **Nguồn cấp Tin tức (RSS) & Phân loại Ngành**:
+   - Dữ liệu tin tức được thu thập tự động từ các nguồn RSS công khai (VnExpress, Tuổi Trẻ, Thanh Niên, VietnamNet).
+   - **Phân loại ngành và mã liên quan được thực hiện thuần túy theo cơ chế khớp từ khóa (Rule-based Keyword Mapping)**, không sử dụng mô hình học máy (NLP/NER) phức tạp. Các bài viết vĩ mô không chứa từ khóa đặc thù ngành sẽ được xếp vào nhóm "Chung" hoặc để giá trị `NULL`.
 
 ---
 
-## 6. Kết luận & Tác động Nghiệp vụ
+## 6. Dữ liệu Phi cấu trúc (Tài liệu BCTC PDF)
+- Hệ thống xây dựng khung kiến trúc phân cấp `data/tai_lieu/<ma_cp>/<loai>/<nam>/` và bảng quản lý `meta_tai_lieu`.
+- **Tập tin PDF hiện tại chỉ là dữ liệu mẫu (Sample/Mock)** nhằm minh họa năng lực quản lý tài liệu phi cấu trúc đối với các mã đầu ngành (FPT, VCB, HPG, TCB). Hệ thống **không cào hàng loạt toàn bộ tệp PDF BCTC lịch sử** theo đúng phạm vi kỹ thuật của đồ án.
+
+---
+
+## 7. Kết luận & Tác động Nghiệp vụ
 Các hạn chế nêu trên hoàn toàn nằm trong tầm kiểm soát và được xử lý theo đúng nguyên tắc:
 - **Không tự ý suy đoán số liệu khi không đủ cơ sở dữ liệu nguồn.**
 - **Mọi vị trí thiếu dữ liệu đều được hiển thị "N/A" một cách minh bạch, có chú thích rõ ràng.**

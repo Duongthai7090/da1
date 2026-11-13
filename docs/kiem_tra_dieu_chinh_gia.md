@@ -66,11 +66,11 @@
 ### Biến động thực (không nghi lệch điều chỉnh)
 - **BSR**: Cổ phiếu dầu khí vốn hóa nhỏ, biên độ dao động lớn (±7%), có nhiều phiên >±10% vào 2020-2022 trong thị trường biến động cao — đây là biến động thực, không phải lỗi điều chỉnh.
 - **GVR, LPB, MCH, SHB, VIB**: Phần lớn các phiên >±10% rơi vào tháng 3/2020 (thị trường toàn cầu sụp đổ COVID-19) hoặc các đợt biến động thị trường cao 2020-2022. Không có sự kiện nào trong ±10 ngày khớp với tỷ lệ đủ lớn để giải thích.
-- **TCB 2026-10-15**: Giảm 33,4% — bất thường rất lớn; không tìm thấy sự kiện nào. Cần kiểm tra thủ công (chia tách/phát hành không có trong dữ liệu sự kiện hiện có, hoặc lỗi nguồn dữ liệu KBS).
+- **TCB 2026-10-15**: Giảm 33,4% (từ 32.95 xuống 21.95 nghìn đồng) — Đã đối soát xác nhận: TCB có sự kiện **Phát hành cổ phiếu trả cổ tức tỷ lệ 50.0%** (GDKHQ ngày 29/10/2026, ngày chốt 30/10/2026). Nguồn KBS đã điều chỉnh hồi tố giá tham chiếu từ phiên 15/10/2026, dẫn đến bước nhảy lệch giữa chuỗi dữ liệu gốc (chưa điều chỉnh) và dữ liệu mới cập nhật.
 
 ### Cảnh báo trên dashboard
 Các phiên sau sẽ được gắn cờ ⚠️ trên trang Phân tích Cổ phiếu:
-- **TCB** ngày 2026-10-15 (-33.4%): (không tìm thấy sự kiện nào trong ±10 ngày)
+- **TCB** ngày 2026-10-15 (-33.4%): Do ghép nguồn KBS (đã điều chỉnh hồi tố sự kiện chia cổ tức 50% GDKHQ 29/10/2026) vào chuỗi dữ liệu gốc.
 - **SHB** ngày 2021-05-14 (10.0%): Phát hành cổ phiếu - Trả Cổ tức bằng Cổ phiếu tỉ lệ 10.0%
 
 ## Hạn chế

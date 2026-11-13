@@ -17,9 +17,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils.data_loader import get_all_data
+from utils.style import setup, ghi_chu, TANG, GIAM, VN30, VNINDEX
 
-st.set_page_config(page_title="Báo cáo Tài chính | VN30", page_icon="📋", layout="wide")
-st.title("📋 Phân tích Báo cáo Tài chính & Cơ bản")
+setup('Báo cáo tài chính', 'Báo cáo tài chính & cơ bản')
 
 # --- Load dữ liệu ---
 data = get_all_data()
@@ -27,7 +27,7 @@ fact_tc = data["fact_tc"]
 dim_cp = data["dim_cp"]
 ngay_cap_nhat = data["ngay_cap_nhat"]
 
-st.caption(f"📅 Cập nhật dữ liệu giá đến ngày: **{ngay_cap_nhat}** | Dữ liệu BCTC: **2022 - 2025**")
+st.caption(f"Cập nhật dữ liệu giá đến ngày: **{ngay_cap_nhat}** | Dữ liệu BCTC: **2022 - 2025**")
 
 # Kết hợp với dim_co_phieu để có ngành và tên công ty
 df_all = fact_tc.merge(
@@ -37,7 +37,7 @@ df_all = fact_tc.merge(
 )
 
 # --- Sidebar bộ lọc ---
-st.sidebar.header("🔧 Bộ lọc")
+st.sidebar.markdown("**Bộ lọc**")
 danh_sach_ma = sorted(dim_cp["ma_cp"].unique().tolist())
 ma_chon = st.sidebar.selectbox(
     "Chọn mã cổ phiếu",
@@ -61,7 +61,7 @@ if mau_bctc == "CK":
 df_cp = df_all[df_all["ma_cp"] == ma_chon].sort_values("nam").copy()
 
 # --- Tab hiển thị: Chi tiết mã & So sánh ngành ---
-tab_chitiet, tab_nganh = st.tabs(["📊 Chi tiết doanh nghiệp", "🏢 So sánh trong ngành"])
+tab_chitiet, tab_nganh = st.tabs(["Chi tiết doanh nghiệp", "So sánh trong ngành"])
 
 with tab_chitiet:
     if len(df_cp.dropna(subset=["tong_tai_san"])) == 0:
@@ -71,7 +71,7 @@ with tab_chitiet:
         row_gan_nhat = df_cp[df_cp["nam"] == nam_gan_nhat].iloc[0]
 
         # --- KPI Cards ---
-        st.subheader(f"📌 Chỉ số trọng yếu năm {int(nam_gan_nhat) if pd.notna(nam_gan_nhat) else 'N/A'}")
+        st.subheader(f"Chỉ số trọng yếu năm {int(nam_gan_nhat) if pd.notna(nam_gan_nhat) else 'N/A'}")
         c1, c2, c3, c4 = st.columns(4)
 
         roe_val = row_gan_nhat.get("roe")
@@ -80,13 +80,13 @@ with tab_chitiet:
         lnst_val = row_gan_nhat.get("lnst")
 
         with c1:
-            st.metric("📈 ROE", f"{roe_val * 100:.2f}%" if pd.notna(roe_val) else "N/A")
+            st.metric("ROE", f"{roe_val * 100:.2f}%" if pd.notna(roe_val) else "N/A")
         with c2:
-            st.metric("📊 ROA", f"{roa_val * 100:.2f}%" if pd.notna(roa_val) else "N/A")
+            st.metric("ROA", f"{roa_val * 100:.2f}%" if pd.notna(roa_val) else "N/A")
         with c3:
-            st.metric("⚖️ Nợ / Vốn chủ sở hữu", f"{de_val:.2f}x" if pd.notna(de_val) else "N/A")
+            st.metric("Nợ / Vốn chủ sở hữu", f"{de_val:.2f}x" if pd.notna(de_val) else "N/A")
         with c4:
-            st.metric("💰 LNST (tỷ đồng)", f"{lnst_val / 1e9:,.0f}" if pd.notna(lnst_val) else "N/A")
+            st.metric("LNST (tỷ đồng)", f"{lnst_val / 1e9:,.0f}" if pd.notna(lnst_val) else "N/A")
 
         st.divider()
 
@@ -94,7 +94,7 @@ with tab_chitiet:
         col_chart1, col_chart2 = st.columns(2)
 
         with col_chart1:
-            st.subheader("📈 Hiệu quả sinh lời (ROE & ROA)")
+            st.subheader("Hiệu quả sinh lời (ROE & ROA)")
             fig_roe = go.Figure()
             df_plot_roe = df_cp.dropna(subset=["nam"])
             fig_roe.add_trace(go.Bar(
@@ -124,7 +124,7 @@ with tab_chitiet:
 
         with col_chart2:
             if mau_bctc == "NH":
-                st.subheader("🏦 Hiệu quả hoạt động Ngân hàng (CIR & LDR)")
+                st.subheader("Hiệu quả hoạt động Ngân hàng (CIR & LDR)")
                 fig_nh = go.Figure()
                 fig_nh.add_trace(go.Scatter(
                     x=df_plot_roe["nam"].astype(str),
@@ -150,7 +150,7 @@ with tab_chitiet:
                 )
                 st.plotly_chart(fig_nh, use_container_width=True)
             else:
-                st.subheader("🏭 Biên lợi nhuận Doanh nghiệp")
+                st.subheader("Biên lợi nhuận Doanh nghiệp")
                 fig_bien = go.Figure()
                 fig_bien.add_trace(go.Scatter(
                     x=df_plot_roe["nam"].astype(str),
@@ -175,7 +175,7 @@ with tab_chitiet:
                 st.plotly_chart(fig_bien, use_container_width=True)
 
         # --- Bảng số liệu chi tiết ---
-        st.subheader("📑 Bảng cân đối & Kết quả kinh doanh tóm tắt")
+        st.subheader("Bảng cân đối & Kết quả kinh doanh tóm tắt")
         cols_hien_thi = ["nam", "tong_tai_san", "von_chu", "no_phai_tra", "lnst"]
         if mau_bctc == "DN":
             cols_hien_thi += ["doanh_thu_thuan", "bien_loi_nhuan_gop", "bien_loi_nhuan_rong"]
@@ -201,7 +201,7 @@ with tab_chitiet:
         st.dataframe(df_table, use_container_width=True, hide_index=True)
 
 with tab_nganh:
-    st.subheader(f"🏢 So sánh các mã cùng ngành: {nganh_ct}")
+    st.subheader(f"So sánh các mã cùng ngành: {nganh_ct}")
     df_nganh = df_all[df_all["nganh_cap1"] == nganh_ct].copy()
     nam_so_sanh = st.selectbox(
         "Chọn năm so sánh",

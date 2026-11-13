@@ -16,9 +16,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils.data_loader import get_all_data
+from utils.style import setup, ghi_chu, TANG, GIAM, VN30, VNINDEX
 
-st.set_page_config(page_title="Tin tức & Vĩ mô | VN30", page_icon="📰", layout="wide")
-st.title("📰 Tin tức Thị trường & Kinh tế Vĩ mô")
+setup('Tin tức & vĩ mô', 'Tin tức & kinh tế vĩ mô')
 
 # --- Load dữ liệu ---
 data = get_all_data()
@@ -28,15 +28,15 @@ fact_ttm = data["fact_ttm"]
 dim_cp = data["dim_cp"]
 ngay_cap_nhat = data["ngay_cap_nhat"]
 
-st.caption(f"📅 Cập nhật dữ liệu giá đến ngày: **{ngay_cap_nhat}**")
+st.caption(f"Cập nhật dữ liệu giá đến ngày: **{ngay_cap_nhat}**")
 
-tab_vimo, tab_tintuc = st.tabs(["🌐 Kinh tế Vĩ mô", "📰 Tin tức Thị trường"])
+tab_vimo, tab_tintuc = st.tabs(["Kinh tế vĩ mô", "Tin tức thị trường"])
 
 # =========================================================================
 # TAB 1: KINH TẾ VĨ MÔ
 # =========================================================================
 with tab_vimo:
-    st.subheader("📊 Các chỉ báo vĩ mô chính của Việt Nam")
+    st.subheader("Các chỉ báo vĩ mô chính của Việt Nam")
 
     # Trích xuất số liệu
     df_gdp = fact_vi_mo[fact_vi_mo["loai_chi_tieu"] == "tang_truong_gdp"].sort_values("ngay")
@@ -54,18 +54,18 @@ with tab_vimo:
     # KPI 4 cột
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.metric(f"🚀 Tăng trưởng GDP ({nam_gdp})", f"{gdp_gan:.2f}%" if gdp_gan else "N/A", help="Nguồn: World Bank")
+        st.metric(f"Tăng trưởng GDP ({nam_gdp})", f"{gdp_gan:.2f}%" if gdp_gan else "N/A", help="Nguồn: World Bank")
     with c2:
-        st.metric(f"🏷️ Lạm phát CPI ({nam_cpi})", f"{cpi_gan:.2f}%" if cpi_gan else "N/A", help="Nguồn: World Bank")
+        st.metric(f"Lạm phát CPI ({nam_cpi})", f"{cpi_gan:.2f}%" if cpi_gan else "N/A", help="Nguồn: World Bank")
     with c3:
-        st.metric("💵 Tỷ giá USD/VND (Bán)", f"{usd_gan:,.0f} VND" if usd_gan else "N/A", help="Nguồn: Vietcombank tỷ giá hiện tại")
+        st.metric("Tỷ giá USD/VND (Bán)", f"{usd_gan:,.0f} VND" if usd_gan else "N/A", help="Nguồn: Vietcombank tỷ giá hiện tại")
     with c4:
-        st.metric("🏦 Lãi suất liên ngân hàng (VNIBOR)", "N/A", help="Ngân hàng Nhà nước không cung cấp API công khai miễn phí. Xem trang Nguồn & Giới hạn.")
+        st.metric("Lãi suất liên ngân hàng (VNIBOR)", "N/A", help="Ngân hàng Nhà nước không cung cấp API công khai miễn phí. Xem trang Nguồn & Giới hạn.")
 
     st.divider()
 
     # Biểu đồ chuỗi thời gian GDP & CPI
-    st.subheader("📈 Xu hướng Tăng trưởng GDP & Lạm phát CPI (2016 - 2025)")
+    st.subheader("Xu hướng Tăng trưởng GDP & Lạm phát CPI (2016 - 2025)")
     fig_macro = go.Figure()
 
     if len(df_gdp) > 0:
@@ -98,7 +98,7 @@ with tab_vimo:
     st.plotly_chart(fig_macro, use_container_width=True)
 
     # Đối chiếu VN-Index cuối năm với tăng trưởng GDP
-    st.subheader("📉 Tương quan diễn biến VN-Index & Bối cảnh Kinh tế")
+    st.subheader("Tương quan diễn biến VN-Index & Bối cảnh Kinh tế")
     col_cs_vmo = "ma_chi_so" if "ma_chi_so" in fact_ttm.columns else "chi_so"
     df_vni = fact_ttm[fact_ttm[col_cs_vmo] == "VNINDEX"].sort_values("ngay").copy()
     if len(df_vni) > 0:
@@ -119,7 +119,7 @@ with tab_vimo:
 # TAB 2: TIN TỨC THỊ TRƯỜNG
 # =========================================================================
 with tab_tintuc:
-    st.subheader("📰 Dòng tin sự kiện tài chính & doanh nghiệp")
+    st.subheader("Dòng tin sự kiện tài chính & doanh nghiệp")
 
     col_f1, col_f2 = st.columns([1, 2])
     with col_f1:

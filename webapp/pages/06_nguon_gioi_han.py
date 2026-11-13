@@ -14,9 +14,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils.data_loader import get_all_data, CANH_BAO_GIA
+from utils.style import setup, ghi_chu, TANG, GIAM, VN30, VNINDEX
 
-st.set_page_config(page_title="Nguồn & Giới hạn | VN30", page_icon="ℹ️", layout="wide")
-st.title("ℹ️ Nguồn Dữ liệu & Giới hạn Hệ thống")
+setup('Nguồn & giới hạn', 'Nguồn dữ liệu & giới hạn')
 
 # --- Load dữ liệu ---
 data = get_all_data()
@@ -26,28 +26,26 @@ fact_ttm = data["fact_ttm"]
 fact_tc = data["fact_tc"]
 ngay_cap_nhat = data["ngay_cap_nhat"]
 
-st.caption(f"📅 Thời điểm dữ liệu cập nhật gần nhất: **{ngay_cap_nhat}**")
+st.caption(f"Thời điểm dữ liệu cập nhật gần nhất: **{ngay_cap_nhat}**")
 
 # --- Thống kê tổng thể ---
-st.subheader("📦 Kiến trúc Kho dữ liệu Chuẩn hóa (Gold Layer)")
+st.subheader("Kiến trúc Kho dữ liệu Chuẩn hóa (Gold Layer)")
 
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("🏢 Số mã cổ phiếu VN30", f"{len(dim_cp)}")
-c2.metric("📈 Tổng số phiên giao dịch", f"{len(fact_gia):,}")
-c3.metric("📊 Dữ liệu chỉ số thị trường", f"{len(fact_ttm):,} dòng")
-c4.metric("📑 Báo cáo tài chính", f"{len(fact_tc):,} bản ghi")
+c1.metric("Số mã cổ phiếu VN30", f"{len(dim_cp)}")
+c2.metric("Tổng số phiên giao dịch", f"{len(fact_gia):,}")
+c3.metric("Dữ liệu chỉ số thị trường", f"{len(fact_ttm):,} dòng")
+c4.metric("Báo cáo tài chính", f"{len(fact_tc):,} bản ghi")
 
 st.divider()
 
 # --- Tab phân chia: Độ phủ dữ liệu & Hạn chế ---
 tab_dophu, tab_hanche, tab_kientruc = st.tabs([
-    "📋 Bảng độ phủ dữ liệu cổ phiếu",
-    "⚠️ Hạn chế & Giới hạn dữ liệu",
-    "⚙️ Kiến trúc & Cập nhật"
+    "Độ phủ dữ liệu", "Hạn chế dữ liệu", "Kiến trúc & Cập nhật"
 ])
 
 with tab_dophu:
-    st.subheader("📊 Độ phủ dữ liệu giao dịch 30 mã cổ phiếu VN30")
+    st.subheader("Độ phủ dữ liệu giao dịch 30 mã cổ phiếu VN30")
     
     # Tính toán độ phủ thực tế từ fact_gia
     do_phu = fact_gia.groupby("ma_cp").agg(
@@ -78,7 +76,7 @@ with tab_dophu:
     st.dataframe(bang_dp, use_container_width=True, hide_index=True)
 
 with tab_hanche:
-    st.subheader("⚠️ Các giới hạn và phát hiện bất thường về dữ liệu")
+    st.subheader("Các giới hạn và phát hiện bất thường về dữ liệu")
 
     st.markdown("""
 ### 1. Kiểm tra Điều chỉnh giá và Biến động mạnh
@@ -97,7 +95,7 @@ with tab_hanche:
 """)
 
 with tab_kientruc:
-    st.subheader("⚙️ Nguyên tắc kiến trúc & Quy trình cập nhật")
+    st.subheader("Nguyên tắc kiến trúc & Quy trình cập nhật")
 
     st.markdown("""
 - **Nguồn chân lý duy nhất (Single Source of Truth)**: Toàn bộ Dashboard và Báo cáo Power BI đọc trực tiếp từ thư mục `gold/` (định dạng CSV UTF-8 with BOM và Parquet). Cơ sở dữ liệu nguồn MySQL chỉ dùng ở chế độ `SELECT ONLY`.

@@ -19,9 +19,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils.data_loader import get_all_data
+from utils.style import setup, ghi_chu, TANG, GIAM, VN30, VNINDEX
 
-st.set_page_config(page_title="So sánh cổ phiếu | VN30", page_icon="⚖️", layout="wide")
-st.title("⚖️ So sánh Cổ phiếu (Rủi ro - Lợi suất)")
+setup('So sánh cổ phiếu', 'So sánh cổ phiếu: rủi ro và lợi suất')
 
 # --- Load dữ liệu ---
 data = get_all_data()
@@ -32,10 +32,10 @@ fact_ttm = data["fact_ttm"]
 dim_cp = data["dim_cp"]
 ngay_cap_nhat = data["ngay_cap_nhat"]
 
-st.caption(f"📅 Cập nhật đến ngày: **{ngay_cap_nhat}**")
+st.markdown(f'<div class="sub">Dữ liệu đến ngày {ngay_cap_nhat}</div>', unsafe_allow_html=True)
 
 # --- Sidebar bộ lọc ---
-st.sidebar.header("🔧 Bộ lọc")
+st.sidebar.markdown("**Bộ lọc**")
 danh_sach_ma = sorted(dim_cp["ma_cp"].unique().tolist())
 mac_dinh = [m for m in ["FPT", "VCB", "HPG", "MWG"] if m in danh_sach_ma]
 
@@ -127,7 +127,7 @@ for ma in ma_duoc_chon:
 df_tk = pd.DataFrame(thong_ke)
 
 # --- Hiển thị Bảng chỉ số tổng quan ---
-st.subheader("📊 Bảng so sánh chỉ số Hiệu suất & Rủi ro")
+st.subheader("Bảng so sánh chỉ số Hiệu suất & Rủi ro")
 col_format = {
     "Lợi suất tích lũy (%)": "{:+.2f}%",
     "Biến động năm hóa (%)": "{:.2f}%",
@@ -143,7 +143,7 @@ st.dataframe(
 st.divider()
 
 # --- Biểu đồ 1: Lợi suất tích lũy quy chuẩn (%) ---
-st.subheader("📈 Lợi suất tích lũy so sánh (Chuẩn hóa từ ngày đầu kỳ)")
+st.subheader("Lợi suất tích lũy so sánh (Chuẩn hóa từ ngày đầu kỳ)")
 
 fig_cum = go.Figure()
 for i, ma in enumerate(ma_duoc_chon):
@@ -184,7 +184,7 @@ st.plotly_chart(fig_cum, use_container_width=True)
 col_scatter, col_mdd = st.columns(2)
 
 with col_scatter:
-    st.subheader("🎯 Đánh đổi Lợi suất - Rủi ro")
+    st.subheader("Đánh đổi Lợi suất - Rủi ro")
     fig_scatter = px.scatter(
         df_tk,
         x="Biến động năm hóa (%)",
@@ -200,7 +200,7 @@ with col_scatter:
     st.plotly_chart(fig_scatter, use_container_width=True)
 
 with col_mdd:
-    st.subheader("📉 Mức độ sụt giảm từ đỉnh (Drawdown)")
+    st.subheader("Mức độ sụt giảm từ đỉnh (Drawdown)")
     fig_dd = go.Figure()
     for ma in ma_duoc_chon:
         sub_cb = fact_cb[
@@ -226,7 +226,7 @@ with col_mdd:
     st.plotly_chart(fig_dd, use_container_width=True)
 
 # --- Hàng 3: Ma trận tương quan ---
-st.subheader("🔗 Ma trận Hệ số Tương quan Lợi suất")
+st.subheader("Ma trận Hệ số Tương quan Lợi suất")
 if len(pivot_loi.columns) >= 2:
     corr_matrix = pivot_loi.corr().round(2)
     fig_corr = px.imshow(
